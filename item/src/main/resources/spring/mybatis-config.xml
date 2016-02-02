@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2014 杭州端点网络科技有限公司
+  -->
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+    <typeAliases>
+        <!-- category -->
+        <typeAlias type="io.terminus.parana.category.model.BackCategory" alias="BackCategory"/>
+        <typeAlias type="io.terminus.parana.category.model.FrontCategory" alias="FrontCategory"/>
+        <typeAlias type="io.terminus.parana.category.model.CategoryBinding" alias="CategoryBinding"/>
+        <typeAlias type="io.terminus.parana.category.model.Spu" alias="Spu"/>
+        <typeAlias type="io.terminus.parana.category.model.BackCategoryPerm" alias="BackCategoryPerm"/>
+        <!-- item -->
+        <typeAlias type="io.terminus.parana.item.model.Brand" alias="Brand" />
+        <typeAlias type="io.terminus.parana.item.model.Item" alias="Item" />
+        <typeAlias type="io.terminus.parana.item.model.ShipFee" alias="ShipFee" />
+        <typeAlias type="io.terminus.parana.item.model.Sku" alias="Sku" />
+        <typeAlias type="io.terminus.parana.item.model.ItemDetail" alias="ItemDetail" />
+        <typeAlias type="io.terminus.parana.item.model.ItemTemplate" alias="ItemTemplate" />
+        <typeAlias type="io.terminus.parana.item.model.ItemSnapshot" alias="ItemSnapshot" />
+
+        <typeAlias alias="SkuExtra" type="io.terminus.parana.item.model.SkuExtra" />
+        <typeAlias type="io.terminus.parana.item.model.SkuPrice"/>
+
+        <!--deliver fee template-->
+        <typeAlias type="io.terminus.parana.item.model.DeliverFeeTemplate" alias="DeliverFeeTemplate"/>
+        <typeAlias type="io.terminus.parana.item.model.SpecialDeliver" alias="SpecialDeliver"/>
+        <typeAlias type="io.terminus.parana.item.model.FavoriteItem" alias="FavoriteItem"/>
+        <typeAlias type="io.terminus.parana.item.model.ImportApply" alias="ImportApply"/>
+    </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="io.terminus.parana.common.mybatis.EnumValueTypeHandler"
+                     javaType="io.terminus.parana.item.model.Item$Status"/>
+    </typeHandlers>
+</configuration>

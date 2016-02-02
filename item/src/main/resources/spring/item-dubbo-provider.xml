@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2014 杭州端点网络科技有限公司
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <import resource="classpath:spring/terminus-dubbo-provider.xml"/>
+    <import resource="classpath*:spring/*item-service-context.xml"/>
+    <import resource="classpath:spring/persistence-context.xml"/>
+
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.item.service.DeliverFeeReadService" ref="deliverFeeReadServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.item.service.DeliverFeeWriteService" ref="deliverFeeWriteServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.item.service.ItemReadService" ref="itemReadServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.item.service.ItemWriteService" ref="itemWriteServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.category.service.CategoryReadService" ref="categoryReadServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.category.service.CategoryWriteService" ref="categoryWriteServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.category.service.BrandReadService" ref="brandReadServiceImpl"/>
+    <dubbo:service registry="central" retries="0" interface="io.terminus.parana.category.service.BrandWriteService" ref="brandWriteServiceImpl"/>
+</beans>

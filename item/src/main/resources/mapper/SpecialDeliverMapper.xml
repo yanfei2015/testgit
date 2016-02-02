@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~
+  ~   ~ Copyright (c) 2015 杭州端点网络科技有限公司
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="SpecialDeliver">
+    <resultMap id="SpecialDeliverMap" type="SpecialDeliver">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="deliverFeeTemplateId" column="deliver_fee_template_id"/>
+        <result property="addresses" column="addresses"/>
+        <result property="addressForDisplay" column="address_for_display"/>
+        <result property="method" column="method"/>
+        <result property="valuation" column="valuation"/>
+        <result property="fee" column="fee"/>
+        <result property="lowPrice" column="low_price"/>
+        <result property="lowFee" column="low_fee"/>
+        <result property="highPrice" column="high_price"/>
+        <result property="highFee" column="high_fee"/>
+        <result property="middleFee" column="middle_fee"/>
+        <result property="firstFee" column="first_fee"/>
+        <result property="perFee" column="per_fee"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <sql id="tb">
+        parana_special_delivers
+    </sql>
+
+    <sql id="columns">
+        user_id, deliver_fee_template_id, addresses, address_for_display, method, valuation, fee, low_price, low_fee, high_price, high_fee, middle_fee, first_fee,
+        per_fee, created_at, updated_at
+    </sql>
+
+    <sql id="values">
+        #{userId}, #{deliverFeeTemplateId}, #{addresses}, #{addressForDisplay}, #{method}, #{valuation}, #{fee}, #{lowPrice}, #{lowFee}, #{highPrice}, #{highFee}, #{middleFee},
+        #{firstFee}, #{perFee}, now(), now()
+    </sql>
+
+
+    <sql id="updateCondition">
+        <set>
+            updated_at = now(),
+            <if test="addresses != null">addresses = #{addresses},</if>
+            <if test="addressForDisplay != null">address_for_display = #{addressForDisplay},</if>
+            <if test="method != null">method = #{method},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="lowPrice != null">low_price = #{lowPrice},</if>
+            <if test="lowFee != null">low_fee = #{lowFee},</if>
+            <if test="highPrice != null">high_price = #{highPrice},</if>
+            <if test="highFee != null">high_fee = #{highFee},</if>
+            <if test="middleFee != null">middle_fee = #{middleFee},</if>
+            <if test="firstFee != null">first_fee = #{firstFee},</if>
+            <if test="perFee != null">per_fee = #{perFee},</if>
+            <if test="valuation != null">valuation = #{valuation},</if>
+        </set>
+    </sql>
+
+    <insert id="create" parameterType="SpecialDeliver" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="tb"/>
+        (<include refid="columns"/>) VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <update id="update" parameterType="SpecialDeliver">
+        UPDATE <include refid="tb"/>
+        <include refid="updateCondition"/>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM <include refid="tb"/>
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deletes" parameterType="list">
+        DELETE FROM <include refid="tb"/>
+        WHERE id IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="load" parameterType="long" resultMap="SpecialDeliverMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByTemplateIds" resultMap="SpecialDeliverMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE deliver_fee_template_id IN
+        <foreach collection="array" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

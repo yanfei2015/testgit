@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~
+  ~   ~ Copyright (c) 2015 杭州端点网络科技有限公司
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="DeliverFeeTemplate">
+    <resultMap id="DeliverFeeTemplateMap" type="DeliverFeeTemplate">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="method" column="method"/>
+        <result property="valuation" column="valuation"/>
+        <result property="fee" column="fee"/>
+        <result property="lowPrice" column="low_price"/>
+        <result property="lowFee" column="low_fee"/>
+        <result property="highPrice" column="high_price"/>
+        <result property="highFee" column="high_fee"/>
+        <result property="middleFee" column="middle_fee"/>
+        <result property="firstFee" column="first_fee"/>
+        <result property="perFee" column="per_fee"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <sql id="columns">
+        user_id, `name`, method, valuation, `fee`, low_price, low_fee, high_price, high_fee,
+        middle_fee, first_fee, per_fee, is_default, created_at, updated_at
+    </sql>
+
+    <sql id="values">
+        #{userId}, #{name}, #{method}, #{valuation}, #{fee}, #{lowPrice}, #{lowFee}, #{highPrice}, #{highFee},
+        #{middleFee}, #{firstFee}, #{perFee}, #{isDefault}, now(), now()
+    </sql>
+
+    <sql id="tb">
+        parana_deliver_fee_templates
+    </sql>
+
+    <sql id="updateCondition">
+        <set>
+            updated_at = now(),
+            <if test="name != null">name = #{name},</if>
+            <if test="method != null">method = #{method},</if>
+            <if test="valuation != null">valuation = #{valuation},</if>
+            <if test="fee != null">fee = #{fee},</if>
+            <if test="lowPrice != null">low_price = #{lowPrice},</if>
+            <if test="lowFee != null">low_fee = #{lowFee},</if>
+            <if test="highPrice != null">high_price = #{highPrice},</if>
+            <if test="highFee != null">high_fee = #{highFee},</if>
+            <if test="middleFee != null">middle_fee = #{middleFee},</if>
+            <if test="firstFee != null">first_fee = #{firstFee},</if>
+            <if test="perFee != null">per_fee = #{perFee},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+        </set>
+    </sql>
+
+    <insert id="create" parameterType="DeliverFeeTemplate" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO <include refid="tb"/>
+        (<include refid="columns"/>) VALUES
+        (<include refid="values"/>)
+    </insert>
+
+    <update id="update" parameterType="DeliverFeeTemplate">
+        UPDATE <include refid="tb"/>
+        <include refid="updateCondition"/>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE from <include refid="tb"/>
+        WHERE id = #{id}
+    </delete>
+
+    <select id="load" parameterType="long" resultMap="DeliverFeeTemplateMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE id = #{id}
+    </select>
+
+    <select id="loads" parameterType="list" resultMap="DeliverFeeTemplateMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE id IN
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT COUNT(1) FROM
+        <include refid="tb"/>
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="paging" parameterType="map" resultMap="DeliverFeeTemplateMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="findDefaultByUserId" parameterType="long" resultMap="DeliverFeeTemplateMap">
+        SELECT id, <include refid="columns"/>
+        FROM <include refid="tb"/>
+        WHERE user_id = #{userId}
+        AND is_default = 1
+    </select>
+
+    <update id="unDefault" parameterType="long">
+        UPDATE <include refid="tb"/>
+        SET updated_at = now(),
+        is_default = 0
+        WHERE user_id = #{userId}
+        AND is_default = 1
+    </update>
+</mapper>

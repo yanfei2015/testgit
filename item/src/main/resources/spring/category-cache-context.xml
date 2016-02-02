@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2014 杭州端点网络科技有限公司
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <beans profile="dev,standalone">
+        <bean class="io.terminus.parana.category.cache.DevCategoryCacher"/>
+    </beans>
+
+    <beans profile="dubbo, cluster">
+        <bean class="io.terminus.parana.category.cache.CategoryCacher"/>
+        <bean id="zkClientFactory" class="io.terminus.zookeeper.ZKClientFactory" destroy-method="destroy">
+            <constructor-arg index="0" value="#{app.cacheCentralUrl}"/>
+        </bean>
+        <bean id="cacheListener" class="io.terminus.zookeeper.pubsub.Subscriber" >
+            <constructor-arg index="0" ref="zkClientFactory"/>
+            <constructor-arg index="1" value="#{app.cacheTopic}"/>
+        </bean>
+        <bean id="cachePublisher" class="io.terminus.zookeeper.pubsub.Publisher" destroy-method="destroy">
+            <constructor-arg index="0" ref="zkClientFactory"/>
+            <constructor-arg index="1" value="#{app.cacheTopic}"/>
+        </bean>
+    </beans>
+
+</beans>
