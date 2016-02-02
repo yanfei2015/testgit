@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="parana-item" />
+        <module name="test-git" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="parana-item" target="1.5" />
+      <module name="test-git" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
