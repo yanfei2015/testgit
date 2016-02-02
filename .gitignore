@@ -36,3 +36,4 @@ application.yml
 log.txt
 log/
 .env
+out/
